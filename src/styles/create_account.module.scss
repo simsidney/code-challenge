@@ -1,0 +1,16 @@
+.article {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.6);
+}
+
+.form {
+  width: 350px;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.15);
+  padding: 16px;
+  border-radius: 16px;
+  background: #fff;
+}
