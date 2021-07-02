@@ -8,9 +8,88 @@
 }
 
 .form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   width: 350px;
   box-shadow: 0 2px 14px rgba(0, 0, 0, 0.15);
   padding: 16px;
   border-radius: 16px;
   background: #fff;
+}
+
+.logo {
+  margin: auto;
+  width: 100px;
+}
+
+#title {
+  text-align: center;
+  font-family: 'Helvetica', 'Arial', sans-serif
+}
+
+.button {
+  background-color: #463ebd;
+  opacity: 0.85;
+  transition: opacity 0.3s;
+  margin-top: 5%;
+  color: white;
+  border-radius: 10px;
+  border: none;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 16px;
+  width: 350px;
+  text-align: center;
+  height: 40px;
+  cursor: pointer;
+}
+
+.button:hover {
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+.input {
+  border: none;
+  border-bottom: 1px solid rgb(211, 210, 210);
+  display: block;
+  height: 30px;
+  width: 350px;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 16px;
+  outline: none;
+}
+
+.label {
+  display: inline-block;
+  margin-top: 5%;
+  color: grey;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 12px;
+}
+
+.showPW {
+  display: inline;
+  margin-top: 10px;
+}
+
+.showPWLabel{
+  margin-left: 3px;
+  display: inline;
+  color: grey;
+  font-size: 12px;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+}
+
+.error {
+  color: red;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 12px;
+}
+
+.success {
+  color: green;
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 16px;
+  text-align: center;
 }
