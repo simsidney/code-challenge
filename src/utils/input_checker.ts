@@ -1,4 +1,4 @@
-export type Errors = Record<string, string>
+type Errors = Record<string, string>
 
 const validator = (username: string, password: string): Errors => {
   const invalid: Errors = {};

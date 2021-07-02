@@ -12,14 +12,17 @@ describe('CreateAccount', () => {
     fetchMock.resetMocks();
   });
 
-  test('rendering', () => {
+
+  test('PW strength', () => {
     render(<CreateAccount />);
     fetchMock.mockResponseOnce(JSON.stringify({}));
     userEvent.click(screen.getByText('Create Account'));
     expect(fetchMock).toBeCalledTimes(1);
-    expect(fetchMock).toBeCalledWith('/api/create_new_account', {
-      body: '{}',
+    expect(fetchMock).toBeCalledWith('http://localhost:3000/api/password_exposed', {
+      body: '{\"password\":\"\"}',
       method: 'POST',
     });
   });
 });
+
+

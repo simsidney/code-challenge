@@ -6,7 +6,7 @@ describe('/api/create_new_account', () => {
   test('returns true', async () => {
     const { req, res } = mockRequest({
       method: 'POST',
-      body: {},
+      body: { username: 'sidneynguyen3000', password: 'makethispassword@#$pass20charsdsfdsf'},
     });
 
     await createNewAccount(req, res);

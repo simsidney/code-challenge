@@ -1,8 +1,8 @@
 import Head from 'next/head';
-import Image from 'next/image'
+import Image from 'next/image';
 import { FormEvent, useState } from 'react';
 import styles from 'src/styles/create_account.module.scss';
-import logo from '../../public/wealthfront_logo.jpg'
+import logo from '../../public/wealthfront_logo.jpg';
 
 export default function CreateAccount() {
   const [username, setUsername] = useState('');
@@ -14,6 +14,17 @@ export default function CreateAccount() {
 
   async function handleSubmit(evt: FormEvent) {
     evt.preventDefault();
+    await checkPassword(password)
+      .then((response) => {
+        if (response.result) {
+          console.log('hello')
+          setPwExposed(true)
+        }
+      })
+      .catch(() => {
+        throw new Error('Could not check PW strength')
+      })
+
     const response = await fetch('/api/create_new_account', {
       method: 'POST',
       body: JSON.stringify({ username, password }),
@@ -31,14 +42,21 @@ export default function CreateAccount() {
     }
   }
 
+  const checkPassword = async function(text: string) {
+    const response = await fetch('http://localhost:3000/api/password_exposed', {
+      method: 'POST',
+      body: JSON.stringify({ password }),
+    });
+    return await response.json();
+  }
+
   const parseError = (error: any) => {
-    setPwExposed(false);
     setErrorUN('');
     setErrorPW('');
     console.log('errors: ', error)
-    if (error === 'exposedPW') {
-      setPwExposed(true);
-    }
+    // if (error === 'exposedPW') {
+    //   setPwExposed(true);
+    // }
     if (error.user) {
       setErrorUN(error.user)
     }
@@ -66,7 +84,7 @@ export default function CreateAccount() {
           <div className={styles.logo}>
             <Image
               src={logo}
-              alt='Wealthfront logo'
+              alt='Wealthfront-logo'
             />
           </div>
           <h2 id={styles.title}>Create New Account</h2>
@@ -77,14 +95,15 @@ export default function CreateAccount() {
             value={username}
             onChange={(e) => {setUsername(e.target.value)}}/>
           {errorUN ? <p className={styles.error}>{errorUN}</p> : null}
-          <label className={styles.label}>Password: </label>
-          <input
-            className={styles.input}
-            id='password'
-            type='password'
-            name='password'
-            value={password}
-            onChange={(e) => {setPassword(e.target.value)}}/>
+          <label className={styles.label} aria-labelledby='Password:'>Password:
+            <input
+              className={styles.input}
+              id='password'
+              type='password'
+              name='password'
+              value={password}
+              onChange={(e) => {setPassword(e.target.value)}}/>
+          </label>
           <div>
            <input
               className={styles.showPW}
