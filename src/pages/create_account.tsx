@@ -1,5 +1,4 @@
 import Head from 'next/head';
-import Image from 'next/image';
 import { FormEvent, useState } from 'react';
 import styles from 'src/styles/create_account.module.scss';
 
@@ -10,61 +9,62 @@ export default function CreateAccount() {
   const [errorPW, setErrorPW] = useState('');
   const [pwExposed, setPwExposed] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [formFailure, setFormFailure] = useState(false);
 
   async function handleSubmit(evt: FormEvent) {
     evt.preventDefault();
-    await checkPassword(password)
-      .then((response) => {
-        if (response.result) {
-          setPwExposed(true)
-        }
-      })
-      .catch(() => {
-        throw new Error('Could not check PW strength')
-      })
-
-    const response = await fetch('/api/create_new_account', {
-      method: 'POST',
-      body: JSON.stringify({ username, password }),
-    });
-    const data = await response.json()
-    console.log('data: ', data);
-    if (data.result) {
-      setSuccess(true);
-      setPwExposed(false);
-      setErrorUN('');
-      setErrorPW('');
-    } else {
-      setSuccess(false);
-      parseError(data.errors)
-    }
-  }
-
-  const checkPassword = async function(text: string) {
-    const response = await fetch('http://localhost:3000/api/password_exposed', {
+    setFormFailure(false)
+    setPwExposed(false);
+    try {
+      const response = await fetch('http://localhost:3000/api/password_exposed', {
       method: 'POST',
       body: JSON.stringify({ password }),
-    });
-    return await response.json();
+      });
+      const verifyPW = await response.json();
+      console.log(verifyPW)
+      if (verifyPW.result) {
+        setPwExposed(true)
+      }
+      if (!pwExposed) {
+        const response = await fetch('/api/create_new_account', {
+          method: 'POST',
+          body: JSON.stringify({ username, password }),
+        });
+        const data = await response.json();
+        if (data.result) {
+          setSuccess(true);
+          setPwExposed(false);
+          setErrorUN('');
+          setErrorPW('');
+        } else {
+          setSuccess(false);
+          parseError(data.errors);
+        }
+      }
+    }
+    catch (error) {
+      setFormFailure(true)
+    }
+
   }
 
   const parseError = (error: any) => {
     setErrorUN('');
     setErrorPW('');
     if (error.user) {
-      setErrorUN(error.user)
+      setErrorUN(error.user);
     }
     if (error.pw) {
-      setErrorPW(error.pw)
+      setErrorPW(error.pw);
     }
   }
 
   const displayPW = () => {
     var pw:any = document.getElementById('password');
     if (pw.type === 'password') {
-      pw.type = 'text'
+      pw.type = 'text';
     } else {
-      pw.type = 'password'
+      pw.type = 'password';
     }
   }
 
@@ -109,8 +109,9 @@ export default function CreateAccount() {
           </div>
           {errorPW ? <p className={styles.error}>{errorPW}</p> : null}
           {pwExposed ? <p className={styles.error}>Your password has been exposed, please choose a different password</p> : null}
-          <button className={styles.button} type='submit'>Create Account</button>
-          {success? <p className={styles.success}>Account Successfully Created</p> : null}
+          <button className={styles.button}>Create Account</button>
+          {success ? <p className={styles.success}>Account successfully created</p> : null}
+          {formFailure ? <p className={styles.failure}>Error: Please try again.</p> : null}
         </form>
       </article>
     </>

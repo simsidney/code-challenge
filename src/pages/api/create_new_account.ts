@@ -18,7 +18,7 @@ interface BooleanResult {
 
 export default async function createNewAccount(req: NextApiRequest, res: NextApiResponse<BooleanResult>) {
   const { username, password }: CreateNewAccountParameters = JSON.parse(req.body);
-  const errors: Errors = validator(username, password)
-  const pwTest = ((errors.user || errors.pw) ? { result: false, errors: errors } : { result: true})
+  const errors: Errors = validator(username, password);
+  const pwTest = ((errors.user || errors.pw) ? { result: false, errors: errors } : { result: true});
   res.status(200).json(pwTest);
 }
