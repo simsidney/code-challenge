@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import fetchMock from 'jest-fetch-mock';
 import CreateAccount from 'src/pages/create_account';
@@ -12,6 +12,12 @@ describe('CreateAccount', () => {
     fetchMock.resetMocks();
   });
 
+  test('rendering', () => {
+    const { getByRole, getByLabelText } = render(<CreateAccount />);
+    expect(getByRole('textbox',  {name: 'Username:' })).toBeTruthy();
+    expect(getByLabelText('Password:')).toBeTruthy();
+    expect(getByRole('button', { name: 'Create Account' })).toBeTruthy();
+  });
 
   test('PW strength', () => {
     render(<CreateAccount />);

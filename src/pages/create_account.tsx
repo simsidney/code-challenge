@@ -2,7 +2,6 @@ import Head from 'next/head';
 import Image from 'next/image';
 import { FormEvent, useState } from 'react';
 import styles from 'src/styles/create_account.module.scss';
-import logo from '../../public/wealthfront_logo.jpg';
 
 export default function CreateAccount() {
   const [username, setUsername] = useState('');
@@ -17,7 +16,6 @@ export default function CreateAccount() {
     await checkPassword(password)
       .then((response) => {
         if (response.result) {
-          console.log('hello')
           setPwExposed(true)
         }
       })
@@ -53,10 +51,6 @@ export default function CreateAccount() {
   const parseError = (error: any) => {
     setErrorUN('');
     setErrorPW('');
-    console.log('errors: ', error)
-    // if (error === 'exposedPW') {
-    //   setPwExposed(true);
-    // }
     if (error.user) {
       setErrorUN(error.user)
     }
@@ -81,21 +75,23 @@ export default function CreateAccount() {
       </Head>
       <article className={styles.article}>
         <form className={styles.form} onSubmit={handleSubmit}>
-          <div className={styles.logo}>
-            <Image
-              src={logo}
-              alt='Wealthfront-logo'
-            />
-          </div>
+          <img
+            className={styles.logo}
+            src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Wealthfront_Logo.svg/1200px-Wealthfront_Logo.svg.png'
+            alt='Wealthfront-logo'
+          />
           <h2 id={styles.title}>Create New Account</h2>
-          <label className={styles.label}>Username: </label>
+          <label className={styles.label}>Username:
           <input
             className={styles.input}
-            type='text' name='username'
+            id='username'
+            type='text'
+            name='username'
             value={username}
             onChange={(e) => {setUsername(e.target.value)}}/>
+          </label>
           {errorUN ? <p className={styles.error}>{errorUN}</p> : null}
-          <label className={styles.label} aria-labelledby='Password:'>Password:
+          <label className={styles.label}>Password:
             <input
               className={styles.input}
               id='password'
