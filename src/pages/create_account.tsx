@@ -21,11 +21,10 @@ export default function CreateAccount() {
       body: JSON.stringify({ password }),
       });
       const verifyPW = await response.json();
-      console.log(verifyPW)
       if (verifyPW.result) {
         setPwExposed(true)
       }
-      if (!pwExposed) {
+      if (!verifyPW.result) {
         const response = await fetch('/api/create_new_account', {
           method: 'POST',
           body: JSON.stringify({ username, password }),
