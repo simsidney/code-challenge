@@ -59,6 +59,30 @@ describe('CreateAccount', () => {
     expect(successMessage).toBeInTheDocument()
   });
 
+  test('Should render a username error when invalid username provided', async () => {
+    const { getByRole, getByLabelText} = render(<CreateAccount />);
+    fetchMock.mockResponseOnce(JSON.stringify({ result: false }))
+    fetchMock.mockResponseOnce(JSON.stringify({ result: false, errors: { user: 'Username must contain at least 10 characters.' } }));
+    userEvent.type(getByRole('textbox',  {name: 'Username:' }), 'simsidney');
+    userEvent.type(getByLabelText('Password:'), 'superusefulpass@#$34234324');
+    fireEvent.click(getByRole('button', { name: 'Create Account' }));
+    await act(() => Promise.resolve());
+    const errorMessageUser = screen.queryByText('Username must contain at least 10 characters.')
+    expect(errorMessageUser).toBeInTheDocument()
+  });
+
+  test('Should render a password error when invalid password provided', async () => {
+    const { getByRole, getByLabelText } = render(<CreateAccount />);
+    fetchMock.mockResponseOnce(JSON.stringify({ result: false }))
+    fetchMock.mockResponseOnce(JSON.stringify({ result: false, errors: { pw: 'Weak password: Password must be at least 20 characters and contain at least 1 letter, 1 number, and 1 special character.' } }));
+    userEvent.type(getByRole('textbox',  {name: 'Username:' }), 'simsidney435435');
+    userEvent.type(getByLabelText('Password:'), 'simsidney');
+    fireEvent.click(getByRole('button', { name: 'Create Account' }));
+    await act(() => Promise.resolve());
+    const errorMessagePW = screen.queryByText('Weak password: Password must be at least 20 characters and contain at least 1 letter, 1 number, and 1 special character.')
+    expect(errorMessagePW).toBeInTheDocument()
+  });
+
 });
 
 
