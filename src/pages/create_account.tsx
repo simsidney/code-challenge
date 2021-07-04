@@ -44,7 +44,6 @@ export default function CreateAccount() {
     catch (error) {
       setFormFailure(true)
     }
-
   }
 
   const parseError = (error: any) => {
@@ -76,7 +75,7 @@ export default function CreateAccount() {
         <form className={styles.form} onSubmit={handleSubmit}>
           <img
             className={styles.logo}
-            src='https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Wealthfront_Logo.svg/1200px-Wealthfront_Logo.svg.png'
+            src='/wealthfront_logo.jpg/'
             alt='Wealthfront-logo'
           />
           <h2 id={styles.title}>Create New Account</h2>

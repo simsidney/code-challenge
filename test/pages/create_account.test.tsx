@@ -82,7 +82,6 @@ describe('CreateAccount', () => {
     const errorMessagePW = screen.queryByText('Weak password: Password must be at least 20 characters and contain at least 1 letter, 1 number, and 1 special character.')
     expect(errorMessagePW).toBeInTheDocument()
   });
-
 });
 
 
